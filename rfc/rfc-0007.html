@@ -1,4 +1,4 @@
-<!-- version: 1.0.0 | build: 2026-09-19 | update: 2026-09-19 -->
+<!-- version: 1.1.0 | build: 2026-09-19 | update: 2026-09-19 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,23 +83,37 @@
       <li><strong>Pre-Flight DNS Resolution:</strong> The registry crawler MUST resolve target hostnames before issuing
         requests and strictly reject:
         <ul>
-          <li>Loopback addresses (<code>127.0.0.0/8</code>, <code>::1</code>).</li>
+          <li>Loopback, unspecified and IPv4-mapped IPv6 addresses
+            (<code>127.0.0.0/8</code>, <code>::1</code>, <code>0.0.0.0/8</code>, <code>::/128</code>,
+            <code>::ffff:0:0/96</code>).</li>
           <li>RFC 1918 private subnets (<code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>,
             <code>192.168.0.0/16</code>).</li>
-          <li>Link-local and cloud provider metadata addresses (<code>169.254.0.0/16</code>, <code>fe80::/10</code>).
-          </li>
+          <li>Link-local, carrier-grade NAT, unique-local, multicast, reserved and cloud-provider metadata ranges
+            (including <code>100.64.0.0/10</code>, <code>169.254.0.0/16</code>, <code>fe80::/10</code>,
+            <code>fc00::/7</code> and <code>224.0.0.0/4</code>).</li>
         </ul>
       </li>
       <li><strong>Redirect Re-Validation:</strong> HTTP redirects (<code>301</code>, <code>302</code>, <code>307</code>,
         <code>308</code>) MUST be validated against the same IP safety filters at every hop. Registries MUST limit
-        redirect depth to a maximum of 5 hops.
+        redirect depth to a maximum of 5 hops, reject user-info URL components, and never forward authorization,
+        cookies or publisher-supplied request headers across a hop.
+      </li>
+      <li><strong>DNS Rebinding Resistance:</strong> The registry MUST connect only to an address that passed the
+        pre-flight filter, preserve the resolved address for the request, and verify that the connected peer address
+        is still public. A resolver answer MUST NOT be trusted again after a redirect or a new connection without
+        repeating this check.
       </li>
       <li><strong>Protocol &amp; Port Enforcement:</strong> Only <code>https://</code> (and optionally
         <code>http://</code>
         for local sandbox testing) on default ports (443 and 80) is permitted. Custom ports are forbidden.</li>
       <li><strong>Resource Caps:</strong> Connection timeouts MUST NOT exceed 8 seconds. Payload downloads MUST be
-        capped at 1 MB; larger files MUST terminate the connection immediately to prevent memory exhaustion attacks.
+        capped at 1 MB <em>after decompression</em>; larger or malformed bodies MUST terminate the connection
+        immediately. Registries MUST parse JSON with duplicate-key detection and MUST NOT fetch URLs, resolve
+        references or execute content contained in a manifest during validation.
       </li>
+      <li><strong>Response Isolation:</strong> A registry MUST send an explicit JSON <code>Accept</code> header, accept
+        only a successful JSON response, disable ambient credentials, and treat the response as untrusted data. It
+        MUST NOT use a manifest URL as a webhook target, proxy target or browser redirect.</li>
     </ol>
 
     <h2>4. Semantic Caching &amp; Polling Discipline</h2>
@@ -203,6 +217,25 @@
       Registry-specific operational attributes (e.g. internal review aggregations, editorial rankings, click counters,
       sponsorship flags) MUST be stored in the registry's own private database. They MUST NOT be injected into published
       MSR JSON manifests.
+    </p>
+
+    <h2>8. Claim, Signature and Verification Boundaries</h2>
+    <p>
+      A syntactically valid manifest is a publisher claim, not proof that every statement in it is true. Registries
+      MUST label domain verification, signatures, availability, data residency and audit receipts according to the
+      evidence they independently observed. A registry MUST NOT upgrade a publisher-declared
+      <code>trust.domain_verification.status</code> to verified merely because the field is present.
+    </p>
+    <p>
+      When validating an RFC 0003 signature, a registry MUST canonicalize the manifest with JCS after removing
+      <code>trust.signatures</code>, identify the advertised algorithm, and reject malformed encodings, unsupported
+      algorithms and failed verification. A signature proves control of a private key at signing time; it does not by
+      itself prove vendor identity, legal compliance, product availability or security quality.
+    </p>
+    <p>
+      Registries MUST retain the retrieval time, effective URL, response validators and verification outcome needed to
+      explain a displayed trust state. They SHOULD expose a re-check action and MUST downgrade a previously verified
+      state when the proof is revoked, absent or fails on refresh.
     </p>
   </div>
 

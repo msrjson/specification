@@ -55,6 +55,12 @@ normative change is to the unratified v2.1 draft schema.
 
 ### Changed
 
+- RFC 0007's draft crawler rules now require filtering additional non-public IP
+  ranges, DNS-rebinding resistance, redirect credential isolation, decompressed
+  response limits, duplicate-key-safe JSON parsing and explicit boundaries
+  between publisher claims and independently observed verification. These are
+  draft registry requirements and do not alter the MSR JSON 2.0 schema.
+
 - RFC 0007 now consistently identifies a manifest's authoritative host as
   `entity.domain`, the field defined by the 2.0 schema. Its PAD-normalization
   guidance no longer instructs registries to add an unsupported
