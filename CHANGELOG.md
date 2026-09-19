@@ -55,6 +55,13 @@ normative change is to the unratified v2.1 draft schema.
 
 ### Changed
 
+- RFC 0007 now consistently identifies a manifest's authoritative host as
+  `entity.domain`, the field defined by the 2.0 schema. Its PAD-normalization
+  guidance no longer instructs registries to add an unsupported
+  `artifacts[].verified` field: artifacts without a verified SHA-256 digest are
+  omitted from the canonical manifest and any ingestion state remains internal
+  to the registry. This is a draft clarification and changes no 2.0 validation.
+
 - The project is named **MSR JSON** everywhere it names itself: RFC page titles
   and logo text say "MSR JSON" instead of "MSR Standard".
 

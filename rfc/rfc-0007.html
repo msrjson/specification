@@ -62,13 +62,13 @@
     <ul>
       <li><strong>Canonical Discovery:</strong> Registries MUST support automatic resolution of manifests at the
         well-known
-        URI specified in RFC 0001: <code>https://&lt;primary_domain&gt;/.well-known/msr.json</code>.</li>
+        URI specified in RFC 0001: <code>https://&lt;entity.domain&gt;/.well-known/msr.json</code>.</li>
       <li><strong>Zero-Account Ingestion:</strong> Registries SHOULD provide an open submission interface allowing any
         user,
         developer, or agent to submit a manifest URI without requiring prior user account registration.</li>
       <li><strong>Domain-Bound Authority:</strong> Serving a valid manifest over TLS at the product's official root
         domain
-        (<code>entity.primary_domain</code>) constitutes primary cryptographic and transport authority for technical
+        (<code>entity.domain</code>) constitutes primary cryptographic and transport authority for technical
         product metadata. Registries MUST treat this source as authoritative over unverified third-party submissions.
       </li>
     </ul>
@@ -166,8 +166,9 @@
       <li><strong>Semantic Versioning:</strong> Non-conforming version strings MUST be converted or annotated to comply
         with SemVer 2.0 syntax.</li>
       <li><strong>Artifact Integrity:</strong> Legacy download URLs (e.g. <code>Primary_Download_URL</code>) mapped into
-        <code>releases.latest.artifacts[]</code> MUST be flagged with <code>"verified": false</code> until an SHA-256
-        digest is independently computed or verified.
+          <code>releases.latest.artifacts[]</code> MUST be omitted until an SHA-256 digest is independently computed or
+          verified. The canonical 2.0 artifact object has no <code>verified</code> member; registries MAY retain that
+          ingestion state internally but MUST NOT add it to a manifest.
       </li>
     </ul>
 
@@ -184,9 +185,9 @@
         placements, or managing private analytics MUST require domain ownership verification via:
         <ol>
           <li><strong>DNS TXT Challenge:</strong> A DNS record matching <code>_msr-challenge=&lt;token&gt;</code> on
-            the <code>entity.primary_domain</code>.</li>
+            the <code>entity.domain</code>.</li>
           <li><strong>Domain Email Confirmation:</strong> Verification email dispatched to an address under the same
-            domain (e.g. <code>security@&lt;primary_domain&gt;</code>).</li>
+            domain (e.g. <code>security@&lt;entity.domain&gt;</code>).</li>
           <li><strong>Cryptographic Signature:</strong> Manifest signed with an Ed25519 key registered in DNS per RFC
             0003.</li>
         </ol>
