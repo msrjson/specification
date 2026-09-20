@@ -17,6 +17,11 @@ normative change is to the unratified v2.1 draft schema.
 
 ### Added
 
+- `@msrjson/schema` — the npm distribution of this repository's canonical
+  schemas and reference manifests. Its package contents are selected directly
+  from this source of truth; the npm artifact is not a separately maintained
+  schema fork.
+
 - RFC 0007 (working draft), *Software Registry Conformance, Ingestion & Interoperability Specification*:
   specifies normative requirements for software registries and crawlers (Zero-Account URL Ingestion,
   SSRF and DoS network protection, semantic cache polling via ETag/If-Modified-Since, PAD JSON transition

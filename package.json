@@ -1,0 +1,29 @@
+{
+  "name": "@msrjson/schema",
+  "version": "2.0.0",
+  "description": "Canonical MSR JSON schemas and reference manifests",
+  "license": "CC-BY-4.0",
+  "author": "Antonio Santos",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msrjson/specification.git"
+  },
+  "homepage": "https://msrjson.org",
+  "bugs": "https://github.com/msrjson/specification/issues",
+  "files": [
+    "schemas/",
+    "examples/",
+    "AUTHORS",
+    "NOTICE",
+    "LICENSE-SPEC",
+    "README.md"
+  ],
+  "exports": {
+    "./msr-2.0.json": "./schemas/msr-2.0.json",
+    "./msr-1.1.json": "./schemas/msr-1.1.json",
+    "./msr-2.1-draft.json": "./schemas/msr-2.1-draft.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
