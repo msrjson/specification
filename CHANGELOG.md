@@ -17,6 +17,8 @@ normative change is to the unratified v2.1 draft schema.
 
 ### Added
 
+- RFC 0008 (working draft), *Media Assets, Package Manager Distribution, Execution Requirements & Push-Ping Ingestion Protocol*:
+  specifies standardized visual media descriptors (`entity.media`), package manager identifiers (`distribution.package_managers` and `distribution.app_stores`), structured machine requirements (`capabilities.requirements`), and the reactive Push-Ping ingestion protocol (`POST /api/v1/ping`) for registries.
 - `@msrjson/schema` — the npm distribution of this repository's canonical
   schemas and reference manifests. Its package contents are selected directly
   from this source of truth; the npm artifact is not a separately maintained

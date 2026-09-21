@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://msrjson.org/schemas/msr-2.1-draft.json",
   "title": "MSR JSON Protocol Schema (v2.1 Draft)",
-  "description": "Experimental draft schema adding agent sandboxing, A2A messaging endpoints, multi-signature attestation, and geographic and language availability (RFC-0006).",
+  "description": "Experimental draft schema adding agent sandboxing (RFC-0004), geographic and language availability (RFC-0006), media assets, package managers, execution requirements, and push-ping ingestion (RFC-0008).",
   "type": "object",
   "required": [
     "$schema",
@@ -63,6 +63,81 @@
       "type": "string",
       "pattern": "^[A-Z]{3}$",
       "description": "ISO 4217 alphabetic currency code (e.g. BRL, EUR, USD), the same form as capabilities.pricing.currency."
+    },
+    "media_block": {
+      "type": "object",
+      "description": "Standardized media, visual assets, and video demonstrations (RFC-0008).",
+      "additionalProperties": false,
+      "properties": {
+        "icon": {
+          "type": "object",
+          "description": "Standardized product icons by dimension.",
+          "additionalProperties": false,
+          "properties": {
+            "svg": {
+              "type": "string",
+              "format": "uri"
+            },
+            "png_32": {
+              "type": "string",
+              "format": "uri"
+            },
+            "png_64": {
+              "type": "string",
+              "format": "uri"
+            },
+            "png_128": {
+              "type": "string",
+              "format": "uri"
+            },
+            "png_256": {
+              "type": "string",
+              "format": "uri"
+            },
+            "png_512": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "screenshots": {
+          "type": "array",
+          "description": "Annotated screenshots with optional dimensions and language tag.",
+          "items": {
+            "type": "object",
+            "required": [
+              "url"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "width": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "lang": {
+                "$ref": "#/$defs/language_tag"
+              }
+            }
+          }
+        },
+        "video_demo_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "HTTPS URL for product video demo or walkthrough."
+        }
+      }
     }
   },
   "properties": {
@@ -82,6 +157,9 @@
             "$ref": "#/$defs/language_tag"
           },
           "description": "Localized descriptions keyed by BCP 47 language tag (RFC-0006)."
+        },
+        "media": {
+          "$ref": "#/$defs/media_block"
         }
       }
     },
@@ -202,6 +280,107 @@
               "description": "Currencies the product can be billed in."
             }
           }
+        },
+        "requirements": {
+          "type": "object",
+          "description": "Standardized execution, hardware, and OS requirements (RFC-0008).",
+          "additionalProperties": false,
+          "properties": {
+            "architectures": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "x86_64",
+                  "arm64",
+                  "aarch64",
+                  "riscv64",
+                  "wasm32",
+                  "universal"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "operating_systems": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "os"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "os": {
+                    "type": "string",
+                    "enum": [
+                      "linux",
+                      "darwin",
+                      "windows",
+                      "freebsd",
+                      "android",
+                      "ios"
+                    ]
+                  },
+                  "min_version": {
+                    "type": "string"
+                  },
+                  "min_kernel": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "hardware": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "min_ram_mb": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "recommended_ram_mb": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "min_storage_mb": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "gpu": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "required": {
+                      "type": "boolean"
+                    },
+                    "min_vram_mb": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "description": "Distribution channels across package managers and app stores (RFC-0008).",
+      "additionalProperties": false,
+      "properties": {
+        "package_managers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "app_stores": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
@@ -212,7 +391,18 @@
       "type": "object"
     },
     "telemetry": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "ping_endpoints": {
+          "type": "array",
+          "description": "Registered Push-Ping endpoints for real-time release notifications (RFC-0008).",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uniqueItems": true
+        }
+      }
     }
   }
 }

@@ -1,0 +1,264 @@
+<!-- version: 1.0.0 | build: 2026-09-21 | update: 2026-09-21 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RFC 0008 — Media Assets, Package Managers, Execution Requirements & Push-Ping Protocol | MSR JSON</title>
+  <meta name="description"
+    content="RFC 0008 defines standardized metadata schemas for media assets, distribution package managers, hardware/OS execution requirements, and the Push-Ping registry ingestion protocol.">
+  <link rel="canonical" href="https://msrjson.org/rfc/rfc-0008.html">
+  <meta property="og:site_name" content="MSR JSON">
+  <meta property="og:type" content="article">
+  <meta property="og:title"
+    content="RFC 0008 — Media Assets, Package Managers, Execution Requirements & Push-Ping Protocol | MSR JSON">
+  <meta property="og:description"
+    content="RFC 0008 defines standardized metadata schemas for media assets, distribution package managers, hardware/OS execution requirements, and the Push-Ping registry ingestion protocol.">
+  <meta property="og:url" content="https://msrjson.org/rfc/rfc-0008.html">
+  <meta property="og:image" content="https://msrjson.org/assets/img/og-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title"
+    content="RFC 0008 — Media Assets, Package Managers, Execution Requirements & Push-Ping Protocol | MSR JSON">
+  <meta name="twitter:description"
+    content="RFC 0008 defines standardized metadata schemas for media assets, distribution package managers, hardware/OS execution requirements, and the Push-Ping registry ingestion protocol.">
+  <meta name="twitter:image" content="https://msrjson.org/assets/img/og-preview.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "RFC 0008 — Media Assets, Package Managers, Execution Requirements & Push-Ping Protocol",
+  "description": "RFC 0008 defines standardized metadata schemas for media assets, distribution package managers, hardware/OS execution requirements, and the Push-Ping registry ingestion protocol.",
+  "url": "https://msrjson.org/rfc/rfc-0008.html",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Antonio Santos"
+  }
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-link">
+        <img src="/assets/img/msr-logo.svg" alt="MSR JSON" class="brand-logo">
+      </a>
+      <div class="nav-meta-badge">
+        <span class="dot"></span> Protocol v2.0.0
+      </div>
+    </div>
+  </header>
+
+  <div class="container" style="max-width: 860px;">
+    <div style="margin-bottom: 2rem;">
+      <a href="/rfc/" style="font-size: 0.875rem; color: var(--text-subtle);">← Back to RFC Index</a>
+    </div>
+
+    <h1
+      style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary); line-height: 1.3;">
+      RFC 0008 — Media Assets, Package Managers, Execution Requirements &amp; Push-Ping Protocol</h1>
+
+    <div
+      style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.5rem; font-family: var(--font-mono); font-size: 0.8125rem; margin-bottom: 2rem;">
+      <div><strong>RFC:</strong> 0008</div>
+      <div><strong>Title:</strong> Media Assets, Package Manager Distribution, Execution Requirements &amp; Push-Ping
+        Ingestion Protocol</div>
+      <div><strong>Author:</strong> Protocol Stewards &amp; Registry Interoperability WG</div>
+      <div><strong>Status:</strong> Working Draft — in <code>msr-2.1-draft.json</code> only, not ratified</div>
+      <div><strong>Date:</strong> 2026-09-21</div>
+    </div>
+
+    <h2>1. Motivation &amp; Historical Diagnosis</h2>
+    <p>
+      For over two decades, the shareware industry relied on the Association of Shareware Professionals (ASP)
+      <strong>PAD XML</strong> format. PAD XML established vital patterns for software catalogs: rich multi-resolution
+      icons, annotated screenshots, clear hardware requirements, and distribution channels. However, PAD XML suffered
+      from fatal design vulnerabilities: lack of cryptographic signatures, no domain ownership authority, reliance on
+      unstructured text fields, and an exclusively passive pull model that overloaded web networks with uncoordinated
+      crawlers and exposed directories to Server-Side Request Forgery (SSRF).
+    </p>
+    <p>
+      <strong>MSR JSON 2.0</strong> solved the security and governance architecture through Ed25519/ECDSA signatures,
+      canonical domain binding (<code>/.well-known/msr.json</code>), SemVer compliance, strict JSON Schema validation,
+      and interfaces for modern AI agents and MCP servers. Yet MSR JSON 2.0 omitted standard visual media declarations,
+      ecosystem package manager mappings (e.g. PyPI, Homebrew, Docker), structured execution requirements, and real-time
+      push notifications.
+    </p>
+    <p>
+      RFC 0008 introduces four high-impact extensions for the <strong>MSR JSON v2.1</strong> specification, bridging
+      visual catalog presentation, agent execution safety, and real-time indexing.
+    </p>
+
+    <h2>2. Standardized Media Block (<code>entity.media</code>)</h2>
+    <p>
+      Catalogs, software directories (such as MySoftRank), and discovery agents require verified visual assets to
+      present software without relying on brittle HTML screen scraping. RFC 0008 adds an optional
+      <code>entity.media</code> object:
+    </p>
+    <div class="code-container">
+      <pre class="code-block"><code>"media": {
+  "icon": {
+    "svg":     "https://example.com/assets/icon.svg",
+    "png_32":  "https://example.com/assets/icon-32.png",
+    "png_64":  "https://example.com/assets/icon-64.png",
+    "png_128": "https://example.com/assets/icon-128.png",
+    "png_256": "https://example.com/assets/icon-256.png",
+    "png_512": "https://example.com/assets/icon-512.png"
+  },
+  "screenshots": [
+    {
+      "url":    "https://example.com/assets/screen-main.webp",
+      "title":  "Main Dashboard",
+      "width":  1920,
+      "height": 1080,
+      "lang":   "en"
+    }
+  ],
+  "video_demo_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}</code></pre>
+    </div>
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>icon</code></td>
+          <td>object</td>
+          <td>Standardized icon formats and pixel dimensions (<code>svg</code>, <code>png_32</code> to
+            <code>png_512</code>).</td>
+        </tr>
+        <tr>
+          <td><code>screenshots</code></td>
+          <td>array</td>
+          <td>Array of screenshot objects with mandatory <code>url</code>, optional dimensions, title, and BCP 47
+            <code>lang</code> tag (RFC 0006).</td>
+        </tr>
+        <tr>
+          <td><code>video_demo_url</code></td>
+          <td>string (URI)</td>
+          <td>Authoritative HTTPS URL to a video walkthrough or demonstration.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Distribution &amp; Package Managers (<code>distribution</code>)</h2>
+    <p>
+      Modern software is consumed through diverse package registries and application stores. Declaring these identifiers
+      enables directories and autonomous AI agents to generate installation instructions (e.g.
+      <code>brew install</code>, <code>pip install</code>, <code>docker pull</code>) automatically.
+    </p>
+    <p>RFC 0008 introduces <code>distribution</code> as a root-level property:</p>
+    <div class="code-container">
+      <pre class="code-block"><code>"distribution": {
+  "package_managers": {
+    "pypi":     "my-pkg",
+    "npm":      "@org/my-pkg",
+    "crates":   "my_crate",
+    "homebrew": "my-tool",
+    "flathub":  "org.example.MyTool",
+    "docker":   "org/my-tool"
+  },
+  "app_stores": {
+    "google_play":     "com.example.app",
+    "apple_app_store": "id1234567890",
+    "microsoft_store": "9NBLGGH42THL"
+  }
+}</code></pre>
+    </div>
+
+    <h2>4. Execution &amp; Hardware Requirements (<code>capabilities.requirements</code>)</h2>
+    <p>
+      To prevent autonomous agents or users from downloading and attempting to execute incompatible binaries or models,
+      RFC 0008 standardizes structured machine requirements inside <code>capabilities.requirements</code>:
+    </p>
+    <div class="code-container">
+      <pre class="code-block"><code>"requirements": {
+  "architectures": ["x86_64", "arm64"],
+  "operating_systems": [
+    { "os": "linux",   "min_kernel":  "5.15" },
+    { "os": "darwin",  "min_version": "13.0" },
+    { "os": "windows", "min_version": "10.0.19041" }
+  ],
+  "hardware": {
+    "min_ram_mb":         512,
+    "recommended_ram_mb": 2048,
+    "min_storage_mb":     100,
+    "gpu": {
+      "required":   false,
+      "min_vram_mb": 4096
+    }
+  }
+}</code></pre>
+    </div>
+    <p>
+      Recognized architectures include <code>x86_64</code>, <code>arm64</code>, <code>aarch64</code>,
+      <code>riscv64</code>, <code>wasm32</code>, and <code>universal</code>. Recognized operating systems include
+      <code>linux</code>, <code>darwin</code>, <code>windows</code>, <code>freebsd</code>, <code>android</code>, and
+      <code>ios</code>.
+    </p>
+
+    <h2>5. Push-Ping Ingestion Protocol</h2>
+    <p>
+      Rather than forcing registry crawlers to hammer hundreds of thousands of publisher domains daily, publishers can
+      dispatch an authenticated Push-Ping webhook when publishing a release:
+    </p>
+    <div class="code-container">
+      <pre class="code-block"><code>POST https://mysoftrank.com/api/v1/ping
+Content-Type: application/json
+
+{
+  "domain": "example.com"
+}</code></pre>
+    </div>
+    <h3>Normative Ingestion Rules for Push-Ping:</h3>
+    <ol>
+      <li><strong>Domain Authority:</strong> Registries MUST NOT index unverified payload bodies submitted via ping. On
+        receiving a ping, the registry enqueues the domain and independently fetches
+        <code>https://&lt;domain&gt;/.well-known/msr.json</code> according to RFC 0001.</li>
+      <li><strong>SSRF Mitigation:</strong> All pre-flight DNS and IP-range safety checks mandated by RFC 0007 (Section
+        3) MUST be enforced prior to dispatching outbound HTTP requests.</li>
+      <li><strong>Cryptographic Verification:</strong> If the fetched manifest contains a <code>trust.signatures</code>
+        block, the signature MUST be verified before promoting the new release into canonical public indexing.</li>
+      <li><strong>Bandwidth Reduction:</strong> Adopting Push-Ping eliminates continuous polling loops, decreasing
+        registry outbound bandwidth and publisher server load by more than 90%.</li>
+    </ol>
+
+    <h2>6. Compatibility</h2>
+    <p>
+      The properties defined in this RFC reside exclusively in the experimental <code>schemas/msr-2.1-draft.json</code>
+      schema. Existing MSR JSON 2.0 manifests and production 2.0 validators are unaffected and will reject these
+      properties under <code>additionalProperties: false</code> until the 2.1 protocol is formally ratified.
+    </p>
+
+    <h2>7. Security &amp; Safety Considerations</h2>
+    <ul>
+      <li><strong>SVG Media Sanitization:</strong> Registries MUST NOT render publisher-provided SVG images directly
+        inline in browsers without prior sanitization, preventing embedded script execution (Stored XSS).</li>
+      <li><strong>Image Proxying:</strong> Registries SHOULD cache and proxy screenshot and icon assets to prevent
+        publisher tracking of registry visitor IP addresses.</li>
+      <li><strong>Ping Flooding:</strong> Registries MUST apply rate-limiting per IP and per target domain on their ping
+        endpoints to prevent distributed denial-of-service amplification.</li>
+    </ul>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-bottom" style="border: none; justify-content: center;">
+      <div>MSR JSON RFC Series · Published under CC-BY 4.0</div>
+    </div>
+  </footer>
+</body>
+
+</html>
