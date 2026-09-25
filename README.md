@@ -41,6 +41,7 @@ gatekeeper and no vendor who owns the format.
 | `examples/*.json` | Six reference manifests, one per entity type, each validating with zero errors |
 | `rfc/rfc-0001..0003.html` | The ratified RFCs |
 | `rfc/rfc-0006.html` | Working draft: geographic and language availability, in the v2.1 draft only |
+| `rfc/rfc-0008.html` | Working draft: media, distribution, execution requirements and Push-Ping |
 | `tests/` | The conformance suite below |
 
 ## The MSR JSON repositories
@@ -85,6 +86,28 @@ check-jsonschema \
   --schemafile https://msrjson.org/schemas/msr-2.0.json \
   .well-known/msr.json
 ```
+
+## Experimental MSR JSON 2.1 draft
+
+[RFC 0008](rfc/rfc-0008.html) proposes optional `entity.media`,
+`distribution.package_managers`, `distribution.app_stores`, and
+`capabilities.requirements` fields. It also describes registry Push-Ping
+processing. The draft schema currently models registry ping URLs as
+`telemetry.ping_endpoints`; it does not define a signed ping payload. These
+fields are experimental and are rejected by the stable 2.0 schema.
+
+For a local experiment, set the manifest's `$schema` to
+`https://msrjson.org/schemas/msr-2.1-draft.json` and validate with an explicit
+copy of `schemas/msr-2.1-draft.json`:
+
+```bash
+check-jsonschema --schemafile schemas/msr-2.1-draft.json path/to/msr.json
+```
+
+The source versions of `msr-validator` and `msr-cli` also accept an explicit
+local draft schema. They do not bundle the draft by default; the pinned 2.0
+schema remains their default. The draft has not been ratified or released as a
+stable protocol version.
 
 ## Changelog
 
