@@ -1,0 +1,434 @@
+{
+  "$comment": "MSR JSON category taxonomy (RFC 0009). Slugs are stable: never renamed or reused; a retired slug is marked deprecated.",
+  "version": "1.0.0",
+  "categories": [
+    {
+      "slug": "accounting-fiscal",
+      "name": "Accounting & Tax"
+    },
+    {
+      "slug": "ai-agents",
+      "name": "AI Agents"
+    },
+    {
+      "slug": "ai-apps",
+      "name": "AI Apps"
+    },
+    {
+      "slug": "ai-coding",
+      "name": "AI Coding"
+    },
+    {
+      "slug": "antivirus-security",
+      "name": "Antivirus & Security"
+    },
+    {
+      "slug": "api-clients",
+      "name": "API Clients"
+    },
+    {
+      "slug": "api-gateways",
+      "name": "API Gateways"
+    },
+    {
+      "slug": "application-security",
+      "name": "Application Security"
+    },
+    {
+      "slug": "audio-video",
+      "name": "Audio & Video"
+    },
+    {
+      "slug": "backup-recovery",
+      "name": "Backup & Recovery"
+    },
+    {
+      "slug": "banking-fintech",
+      "name": "Banking & Fintech"
+    },
+    {
+      "slug": "business-intelligence",
+      "name": "Business Intelligence"
+    },
+    {
+      "slug": "cad-3d",
+      "name": "CAD & 3D"
+    },
+    {
+      "slug": "calendar-scheduling",
+      "name": "Calendar & Scheduling"
+    },
+    {
+      "slug": "ci-cd",
+      "name": "CI/CD"
+    },
+    {
+      "slug": "clinic-management",
+      "name": "Clinic Management"
+    },
+    {
+      "slug": "cloud-hosting",
+      "name": "Cloud Hosting"
+    },
+    {
+      "slug": "cloud-storage",
+      "name": "Cloud Storage"
+    },
+    {
+      "slug": "cms",
+      "name": "CMS"
+    },
+    {
+      "slug": "code-editors",
+      "name": "Code Editors"
+    },
+    {
+      "slug": "collaboration",
+      "name": "Collaboration"
+    },
+    {
+      "slug": "construction-management",
+      "name": "Construction Management"
+    },
+    {
+      "slug": "contact-center",
+      "name": "Contact Center"
+    },
+    {
+      "slug": "containers",
+      "name": "Containers"
+    },
+    {
+      "slug": "crm",
+      "name": "CRM"
+    },
+    {
+      "slug": "crypto-wallets",
+      "name": "Crypto Wallets"
+    },
+    {
+      "slug": "data-science",
+      "name": "Data Science"
+    },
+    {
+      "slug": "data-warehouses",
+      "name": "Data Warehouses"
+    },
+    {
+      "slug": "databases",
+      "name": "Databases"
+    },
+    {
+      "slug": "design-tools",
+      "name": "Design Tools"
+    },
+    {
+      "slug": "desktop-utilities",
+      "name": "Desktop Utilities"
+    },
+    {
+      "slug": "e-learning",
+      "name": "E-Learning"
+    },
+    {
+      "slug": "e-signature",
+      "name": "E-Signature"
+    },
+    {
+      "slug": "ecommerce-platforms",
+      "name": "E-Commerce Platforms"
+    },
+    {
+      "slug": "education-management",
+      "name": "Education Management"
+    },
+    {
+      "slug": "electronics-design",
+      "name": "Electronics Design"
+    },
+    {
+      "slug": "email-clients",
+      "name": "Email Clients"
+    },
+    {
+      "slug": "endpoint-management",
+      "name": "Endpoint Management"
+    },
+    {
+      "slug": "erp",
+      "name": "ERP"
+    },
+    {
+      "slug": "field-service",
+      "name": "Field Service"
+    },
+    {
+      "slug": "food-delivery",
+      "name": "Food Delivery"
+    },
+    {
+      "slug": "forms-surveys",
+      "name": "Forms & Surveys"
+    },
+    {
+      "slug": "funeral-management",
+      "name": "Funeral Management"
+    },
+    {
+      "slug": "game-engines",
+      "name": "Game Engines"
+    },
+    {
+      "slug": "game-platforms",
+      "name": "Game Platforms"
+    },
+    {
+      "slug": "graphics-design",
+      "name": "Graphics Design"
+    },
+    {
+      "slug": "health-fitness",
+      "name": "Health & Fitness"
+    },
+    {
+      "slug": "help-desk",
+      "name": "Help Desk"
+    },
+    {
+      "slug": "hotel-management",
+      "name": "Hotel Management"
+    },
+    {
+      "slug": "hr-payroll",
+      "name": "HR & Payroll"
+    },
+    {
+      "slug": "identity-access",
+      "name": "Identity & Access"
+    },
+    {
+      "slug": "ides",
+      "name": "IDEs"
+    },
+    {
+      "slug": "infrastructure-as-code",
+      "name": "Infrastructure as Code"
+    },
+    {
+      "slug": "internet-apps",
+      "name": "Internet Apps"
+    },
+    {
+      "slug": "investing-trading",
+      "name": "Investing & Trading"
+    },
+    {
+      "slug": "it-service-management",
+      "name": "IT Service Management"
+    },
+    {
+      "slug": "language-learning",
+      "name": "Language Learning"
+    },
+    {
+      "slug": "learning-management",
+      "name": "Learning Management"
+    },
+    {
+      "slug": "legal-practice",
+      "name": "Legal Practice"
+    },
+    {
+      "slug": "live-streaming",
+      "name": "Live Streaming"
+    },
+    {
+      "slug": "llm-runtimes",
+      "name": "LLM Runtimes"
+    },
+    {
+      "slug": "low-code-builders",
+      "name": "Low-Code Builders"
+    },
+    {
+      "slug": "marketing-automation",
+      "name": "Marketing Automation"
+    },
+    {
+      "slug": "mental-health",
+      "name": "Mental Health"
+    },
+    {
+      "slug": "messaging",
+      "name": "Messaging"
+    },
+    {
+      "slug": "mobile-apps",
+      "name": "Mobile Apps"
+    },
+    {
+      "slug": "music-production",
+      "name": "Music Production"
+    },
+    {
+      "slug": "network-security",
+      "name": "Network Security"
+    },
+    {
+      "slug": "note-taking",
+      "name": "Note Taking"
+    },
+    {
+      "slug": "observability",
+      "name": "Observability"
+    },
+    {
+      "slug": "office-suites",
+      "name": "Office Suites"
+    },
+    {
+      "slug": "online-marketplaces",
+      "name": "Online Marketplaces"
+    },
+    {
+      "slug": "operating-systems",
+      "name": "Operating Systems"
+    },
+    {
+      "slug": "password-managers",
+      "name": "Password Managers"
+    },
+    {
+      "slug": "payments-api",
+      "name": "Payment APIs"
+    },
+    {
+      "slug": "pdf-tools",
+      "name": "PDF Tools"
+    },
+    {
+      "slug": "peripherals-software",
+      "name": "Peripheral Software"
+    },
+    {
+      "slug": "personal-finance",
+      "name": "Personal Finance"
+    },
+    {
+      "slug": "photo-editing",
+      "name": "Photo Editing"
+    },
+    {
+      "slug": "point-of-sale",
+      "name": "Point of Sale"
+    },
+    {
+      "slug": "product-analytics",
+      "name": "Product Analytics"
+    },
+    {
+      "slug": "project-management",
+      "name": "Project Management"
+    },
+    {
+      "slug": "reading-research",
+      "name": "Reading & Research"
+    },
+    {
+      "slug": "real-estate",
+      "name": "Real Estate"
+    },
+    {
+      "slug": "recruiting",
+      "name": "Recruiting"
+    },
+    {
+      "slug": "remote-access",
+      "name": "Remote Access"
+    },
+    {
+      "slug": "rendering",
+      "name": "Rendering"
+    },
+    {
+      "slug": "restaurant-management",
+      "name": "Restaurant Management"
+    },
+    {
+      "slug": "search-engines",
+      "name": "Search Engines"
+    },
+    {
+      "slug": "seo-tools",
+      "name": "SEO Tools"
+    },
+    {
+      "slug": "social-media",
+      "name": "Social Media"
+    },
+    {
+      "slug": "social-media-management",
+      "name": "Social Media Management"
+    },
+    {
+      "slug": "spend-management",
+      "name": "Spend Management"
+    },
+    {
+      "slug": "statistics-math",
+      "name": "Statistics & Math"
+    },
+    {
+      "slug": "streaming-media",
+      "name": "Streaming Media"
+    },
+    {
+      "slug": "subscription-billing",
+      "name": "Subscription Billing"
+    },
+    {
+      "slug": "system-cleaners",
+      "name": "System Cleaners"
+    },
+    {
+      "slug": "travel-mobility",
+      "name": "Travel & Mobility"
+    },
+    {
+      "slug": "vector-databases",
+      "name": "Vector Databases"
+    },
+    {
+      "slug": "version-control",
+      "name": "Version Control"
+    },
+    {
+      "slug": "video-editing",
+      "name": "Video Editing"
+    },
+    {
+      "slug": "virtualization",
+      "name": "Virtualization"
+    },
+    {
+      "slug": "vpn",
+      "name": "VPN"
+    },
+    {
+      "slug": "web-analytics",
+      "name": "Web Analytics"
+    },
+    {
+      "slug": "web-browsers",
+      "name": "Web Browsers"
+    },
+    {
+      "slug": "workflow-automation",
+      "name": "Workflow Automation"
+    },
+    {
+      "slug": "writing-tools",
+      "name": "Writing Tools"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://msrjson.org/schemas/msr-2.1-draft.json",
   "title": "MSR JSON Protocol Schema (v2.1 Draft)",
-  "description": "Experimental draft schema adding agent sandboxing (RFC-0004), geographic and language availability (RFC-0006), media assets, package managers, execution requirements, and push-ping ingestion (RFC-0008).",
+  "description": "Experimental draft schema adding agent sandboxing (RFC-0004), geographic and language availability (RFC-0006), media assets, package managers, execution requirements, push-ping ingestion (RFC-0008), and entity category (RFC-0009).",
   "type": "object",
   "required": [
     "$schema",
@@ -160,7 +160,30 @@
         },
         "media": {
           "$ref": "#/$defs/media_block"
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "maxLength": 64,
+          "description": "Primary category of the entity: a slug of the MSR category taxonomy (taxonomy/categories.json, RFC 0009). Describes what the software is for, not the business of its vendor."
+        },
+        "subcategories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+            "maxLength": 64
+          },
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "description": "Secondary categories from the same taxonomy (RFC 0009). Requires category and must not repeat it."
         }
+      },
+      "dependentRequired": {
+        "subcategories": [
+          "category"
+        ]
       }
     },
     "capabilities": {

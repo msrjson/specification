@@ -17,6 +17,13 @@ normative change is to the unratified v2.1 draft schema.
 
 ### Added
 
+- RFC 0009 (working draft), *Entity Category and Category Taxonomy*, proposed
+  by Antonio Santos: optional `entity.category` and `entity.subcategories`
+  (kebab-case slugs, at most 64 characters, 1–5 unique subcategories that
+  require `category`) in the v2.1 draft schema, and the first MSR category
+  taxonomy, `taxonomy/categories.json` 1.0.0, with 107 categories seeded from
+  those registries already use. An unknown slug is a validator warning, not an
+  error. Conformance tests in `tests/test_rfc_0009_category.py`.
 - RFC 0008 (working draft), *Media Assets, Package Manager Distribution, Execution Requirements & Push-Ping Ingestion Protocol*:
   specifies standardized visual media descriptors (`entity.media`), package manager identifiers (`distribution.package_managers` and `distribution.app_stores`), structured machine requirements (`capabilities.requirements`), and the reactive Push-Ping ingestion protocol (`POST /api/v1/ping`) for registries.
 - `@msrjson/schema` — the npm distribution of this repository's canonical

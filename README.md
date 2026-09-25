@@ -42,6 +42,8 @@ gatekeeper and no vendor who owns the format.
 | `rfc/rfc-0001..0003.html` | The ratified RFCs |
 | `rfc/rfc-0006.html` | Working draft: geographic and language availability, in the v2.1 draft only |
 | `rfc/rfc-0008.html` | Working draft: media, distribution, execution requirements and Push-Ping |
+| `rfc/rfc-0009.html` | Working draft: `entity.category` and `entity.subcategories` |
+| `taxonomy/categories.json` | The MSR category taxonomy (RFC 0009), versioned independently of the protocol |
 | `tests/` | The conformance suite below |
 
 ## The MSR JSON repositories

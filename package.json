@@ -13,6 +13,7 @@
   "files": [
     "schemas/",
     "examples/",
+    "taxonomy/",
     "AUTHORS",
     "NOTICE",
     "LICENSE-SPEC",
@@ -21,7 +22,8 @@
   "exports": {
     "./msr-2.0.json": "./schemas/msr-2.0.json",
     "./msr-1.1.json": "./schemas/msr-1.1.json",
-    "./msr-2.1-draft.json": "./schemas/msr-2.1-draft.json"
+    "./msr-2.1-draft.json": "./schemas/msr-2.1-draft.json",
+    "./taxonomy/categories.json": "./taxonomy/categories.json"
   },
   "publishConfig": {
     "access": "public"

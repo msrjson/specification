@@ -1,0 +1,205 @@
+<!-- version: 1.0.0 | build: 2026-09-25 | update: 2026-09-25 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RFC 0009 — Entity Category and Category Taxonomy | MSR JSON</title>
+  <meta name="description"
+    content="RFC 0009 lets a manifest declare what the software is for, through optional entity.category and entity.subcategories slugs drawn from one versioned MSR category taxonomy.">
+  <link rel="canonical" href="https://msrjson.org/rfc/rfc-0009.html">
+  <meta property="og:site_name" content="MSR JSON">
+  <meta property="og:type" content="article">
+  <meta property="og:title"
+    content="RFC 0009 — Entity Category and Category Taxonomy | MSR JSON">
+  <meta property="og:description"
+    content="RFC 0009 lets a manifest declare what the software is for, through optional entity.category and entity.subcategories slugs drawn from one versioned MSR category taxonomy.">
+  <meta property="og:url" content="https://msrjson.org/rfc/rfc-0009.html">
+  <meta property="og:image" content="https://msrjson.org/assets/img/og-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title"
+    content="RFC 0009 — Entity Category and Category Taxonomy | MSR JSON">
+  <meta name="twitter:description"
+    content="RFC 0009 lets a manifest declare what the software is for, through optional entity.category and entity.subcategories slugs drawn from one versioned MSR category taxonomy.">
+  <meta name="twitter:image" content="https://msrjson.org/assets/img/og-preview.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "RFC 0009 — Entity Category and Category Taxonomy",
+  "description": "RFC 0009 lets a manifest declare what the software is for, through optional entity.category and entity.subcategories slugs drawn from one versioned MSR category taxonomy.",
+  "url": "https://msrjson.org/rfc/rfc-0009.html",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Antonio Santos"
+  }
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-link">
+        <img src="/assets/img/msr-logo.svg" alt="MSR JSON" class="brand-logo">
+      </a>
+      <div class="nav-meta-badge">
+        <span class="dot"></span> Protocol v2.0.0
+      </div>
+    </div>
+  </header>
+
+  <div class="container" style="max-width: 860px;">
+    <div style="margin-bottom: 2rem;">
+      <a href="/rfc/" style="font-size: 0.875rem; color: var(--text-subtle);">← Back to RFC Index</a>
+    </div>
+
+    <h1
+      style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary); line-height: 1.3;">
+      RFC 0009 — Entity Category and Category Taxonomy</h1>
+
+    <div
+      style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.5rem; font-family: var(--font-mono); font-size: 0.8125rem; margin-bottom: 2rem;">
+      <div><strong>RFC:</strong> 0009</div>
+      <div><strong>Title:</strong> Entity Category and Category Taxonomy</div>
+      <div><strong>Author:</strong> Antonio Santos</div>
+      <div><strong>Status:</strong> Working Draft — in <code>msr-2.1-draft.json</code> only, not ratified</div>
+      <div><strong>Date:</strong> 2026-09-25</div>
+    </div>
+
+    <h2>1. Motivation</h2>
+    <p>
+      The MSR JSON 2.0 schema describes <code>entity</code> as the "identity, categorization, and localized
+      descriptions of the software entity", yet it defines no category property. Because <code>entity</code> carries
+      <code>additionalProperties: false</code>, a publisher cannot state what kind of software it publishes without
+      making the manifest invalid.
+    </p>
+    <p>
+      Registries classify software anyway, by hand and off-manifest. Each registry guesses, the guesses drift apart,
+      and none of them can be checked against the domain-bound source of truth at
+      <code>/.well-known/msr.json</code>. Identity, trust and releases already live in the manifest; category is the
+      one piece of catalog metadata that does not.
+    </p>
+
+    <h2>2. Manifest Fields (<code>entity.category</code>, <code>entity.subcategories</code>)</h2>
+    <p>RFC 0009 adds two OPTIONAL properties to <code>entity</code>:</p>
+    <div class="code-container">
+      <pre class="code-block"><code>"entity": {
+  "category": "funeral-management",
+  "subcategories": ["erp", "point-of-sale"]
+}</code></pre>
+    </div>
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>category</code></td>
+          <td>string (slug)</td>
+          <td>Primary category. Lowercase kebab-case (<code>^[a-z0-9]+(-[a-z0-9]+)*$</code>), at most 64
+            characters.</td>
+        </tr>
+        <tr>
+          <td><code>subcategories</code></td>
+          <td>array of slugs</td>
+          <td>1 to 5 unique secondary categories, same slug format. Present only together with
+            <code>category</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Normative rules</h3>
+    <ol>
+      <li>A publisher SHOULD choose slugs from the MSR category taxonomy (Section 3).</li>
+      <li><code>subcategories</code> MUST NOT repeat the value of <code>category</code>. The schema cannot express
+        this rule; validators MUST check it.</li>
+      <li>A category describes what the <strong>software is for</strong> (<code>funeral-management</code> is software
+        for funeral homes), not the business of its vendor or its users.</li>
+    </ol>
+
+    <h2>3. The MSR Category Taxonomy</h2>
+    <p>
+      Slugs come from one published taxonomy, versioned with the specification at
+      <a href="/taxonomy/categories.json"><code>taxonomy/categories.json</code></a>. Each entry has a
+      <code>slug</code> and an English <code>name</code>:
+    </p>
+    <div class="code-container">
+      <pre class="code-block"><code>{
+  "version": "1.0.0",
+  "categories": [
+    { "slug": "funeral-management", "name": "Funeral Management" }
+  ]
+}</code></pre>
+    </div>
+    <ol>
+      <li><strong>Seed.</strong> Version 1.0.0 holds 107 categories, taken from the categories software registries
+        already use for 1,012 listings. Starting from classifications in use keeps existing listings mappable.</li>
+      <li><strong>Stability.</strong> A published slug is never renamed and never reused. A slug to retire is marked
+        deprecated in a later version and stays valid.</li>
+      <li><strong>Versioning.</strong> Adding a category is a MINOR taxonomy change; deprecating one is MINOR;
+        clarifying a name is PATCH. The taxonomy version is independent of the protocol version.</li>
+      <li><strong>Changes.</strong> New categories are proposed as pull requests to the specification repository,
+        with the listings that need them.</li>
+    </ol>
+
+    <h2>4. Validation</h2>
+    <ul>
+      <li>The JSON Schema enforces format, length, count, uniqueness and the <code>subcategories</code> →
+        <code>category</code> dependency. A violation is an <strong>error</strong>.</li>
+      <li>A well-formed slug that is not in the taxonomy is a validator <strong>warning</strong> in 2.1, never an
+        error, so taxonomy lag never blocks a publisher.</li>
+      <li>Registries MAY map unknown slugs to their own classification.</li>
+    </ul>
+
+    <h2>5. Registry Processing</h2>
+    <p>
+      When a manifest declares a <code>category</code> found in the taxonomy, a registry SHOULD prefer it over its own
+      classification, because it is domain-bound (and signed when <code>trust.signatures</code> is present). A
+      registry keeps its own classification as a fallback for manifests without a category and for unknown slugs.
+    </p>
+
+    <h2>6. Compatibility</h2>
+    <p>
+      The change is additive and optional: every valid MSR JSON 2.0 manifest stays valid under 2.1, which makes it a
+      MINOR protocol change. The properties exist only in the experimental <code>schemas/msr-2.1-draft.json</code>;
+      the stable 2.0 schema rejects them under <code>additionalProperties: false</code> until 2.1 is ratified.
+    </p>
+
+    <h2>7. Security Considerations</h2>
+    <ul>
+      <li><strong>Self-declared claim.</strong> A publisher can declare any category. Registries SHOULD treat it as a
+        claim, moderate it like any other self-declared field, and MAY override a category that misrepresents the
+        software (for example to reach a less crowded listing).</li>
+      <li><strong>No new surface.</strong> The fields add no endpoint and no network fetch; validating a slug against
+        the taxonomy uses a local copy of <code>categories.json</code>.</li>
+    </ul>
+
+    <h2>8. Open Questions</h2>
+    <ul>
+      <li>Some seed categories describe a platform or a format rather than a purpose (<code>mobile-apps</code>,
+        <code>internet-apps</code>, <code>desktop-utilities</code>, <code>ai-apps</code>). Before ratification, the
+        Working Group decides whether to deprecate them in favour of purpose categories.</li>
+      <li>Whether taxonomy names are localized in the taxonomy file or left to registries.</li>
+    </ul>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-bottom" style="border: none; justify-content: center;">
+      <div>MSR JSON RFC Series · Published under CC-BY 4.0</div>
+    </div>
+  </footer>
+</body>
+
+</html>
