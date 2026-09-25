@@ -1,6 +1,6 @@
 {
   "name": "@msrjson/schema",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Canonical MSR JSON schemas and reference manifests",
   "license": "CC-BY-4.0",
   "author": "Antonio Santos",
@@ -20,6 +20,7 @@
     "README.md"
   ],
   "exports": {
+    "./msr-2.1.json": "./schemas/msr-2.1.json",
     "./msr-2.0.json": "./schemas/msr-2.0.json",
     "./msr-1.1.json": "./schemas/msr-1.1.json",
     "./msr-2.1-draft.json": "./schemas/msr-2.1-draft.json",

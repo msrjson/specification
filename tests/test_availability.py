@@ -1,7 +1,7 @@
-# version: 1.1.1 | build: 2026-09-18 | update: 2026-09-19
-"""RFC-0006: geographic and language availability, in the v2.1 draft schema.
+# version: 1.2.0 | build: 2026-09-18 | update: 2026-09-25
+"""RFC-0006: geographic and language availability, in the MSR JSON 2.1 schema.
 
-The block lives only in the draft. Stable 2.0 manifests are untouched, and the
+The block lives only in 2.1. Stable 2.0 manifests are untouched, and the
 2.0 schema must keep rejecting the block, because adding a property to a closed
 object would change what validates.
 """
@@ -14,7 +14,7 @@ import pytest
 from jsonschema import Draft202012Validator
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DRAFT_SCHEMA = ROOT / "schemas" / "msr-2.1-draft.json"
+SCHEMA = ROOT / "schemas" / "msr-2.1.json"
 STABLE_SCHEMA = ROOT / "schemas" / "msr-2.0.json"
 
 AVAILABILITY = {
@@ -33,8 +33,8 @@ def _load(path):
 
 
 @pytest.fixture(scope="module")
-def draft():
-    schema = _load(DRAFT_SCHEMA)
+def validator():
+    schema = _load(SCHEMA)
     Draft202012Validator.check_schema(schema)
     return Draft202012Validator(schema)
 
@@ -42,7 +42,7 @@ def draft():
 @pytest.fixture
 def manifest():
     data = _load(ROOT / "examples" / "saas.json")
-    data["$schema"] = "https://msrjson.org/schemas/msr-2.1-draft.json"
+    data["$schema"] = "https://msrjson.org/schemas/msr-2.1.json"
     data["capabilities"]["availability"] = copy.deepcopy(AVAILABILITY)
     return data
 
@@ -51,18 +51,18 @@ def _errors(validator, data):
     return [e.message for e in validator.iter_errors(data)]
 
 
-def test_full_availability_block_validates(draft, manifest):
-    assert not _errors(draft, manifest)
+def test_full_availability_block_validates(validator, manifest):
+    assert not _errors(validator, manifest)
 
 
-def test_worldwide_is_declared_with_region_001(draft, manifest):
+def test_worldwide_is_declared_with_region_001(validator, manifest):
     manifest["capabilities"]["availability"] = {"regions": ["001"]}
-    assert not _errors(draft, manifest)
+    assert not _errors(validator, manifest)
 
 
-def test_manifest_without_availability_still_validates(draft, manifest):
+def test_manifest_without_availability_still_validates(validator, manifest):
     del manifest["capabilities"]["availability"]
-    assert not _errors(draft, manifest)
+    assert not _errors(validator, manifest)
 
 
 @pytest.mark.parametrize(
@@ -88,33 +88,33 @@ def test_manifest_without_availability_still_validates(draft, manifest):
         ("languages", ["en", "en"]),
     ],
 )
-def test_invalid_values_are_rejected(draft, manifest, field, value):
+def test_invalid_values_are_rejected(validator, manifest, field, value):
     manifest["capabilities"]["availability"][field] = value
-    assert _errors(draft, manifest), f"{field}={value!r} should not validate"
+    assert _errors(validator, manifest), f"{field}={value!r} should not validate"
 
 
-def test_eu_is_accepted_for_data_residency(draft, manifest):
+def test_eu_is_accepted_for_data_residency(validator, manifest):
     """EU is ISO 3166-1 exceptionally reserved and a CLDR region; M49 150 is
     all of Europe, which is not the same legal perimeter for data protection."""
     manifest["capabilities"]["availability"]["data_residency"] = ["EU"]
-    assert not _errors(draft, manifest)
+    assert not _errors(validator, manifest)
 
 
-def test_unknown_availability_key_is_rejected(draft, manifest):
+def test_unknown_availability_key_is_rejected(validator, manifest):
     manifest["capabilities"]["availability"]["continents"] = ["Europe"]
-    assert any("Additional properties" in m for m in _errors(draft, manifest))
+    assert any("Additional properties" in m for m in _errors(validator, manifest))
 
 
-def test_empty_availability_block_is_rejected(draft, manifest):
+def test_empty_availability_block_is_rejected(validator, manifest):
     manifest["capabilities"]["availability"] = {}
-    assert _errors(draft, manifest)
+    assert _errors(validator, manifest)
 
 
-def test_description_keys_must_be_language_tags(draft, manifest):
+def test_description_keys_must_be_language_tags(validator, manifest):
     manifest["entity"]["descriptions"]["pt-BR"] = {"summary": "Resumo."}
-    assert not _errors(draft, manifest)
+    assert not _errors(validator, manifest)
     manifest["entity"]["descriptions"]["portuguese"] = {"summary": "Resumo."}
-    assert _errors(draft, manifest)
+    assert _errors(validator, manifest)
 
 
 def test_stable_schema_still_rejects_the_block(manifest):

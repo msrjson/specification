@@ -1,4 +1,4 @@
-<!-- version: 1.3.0 | build: 2026-09-18 | update: 2026-09-19 -->
+<!-- version: 1.4.0 | build: 2026-09-18 | update: 2026-09-25 -->
 # AGENTS.md — generating an MSR JSON manifest
 
 Instructions for AI agents (any model) asked to create or update an `msr.json`
@@ -22,24 +22,24 @@ listing.
 | What | Where |
 | --- | --- |
 | This repository — the source of truth | <https://github.com/msrjson/specification> |
-| Canonical schema URL (goes in `$schema`) | `https://msrjson.org/schemas/msr-2.0.json` |
-| Schema file to validate against | `schemas/msr-2.0.json` in this repository |
+| Canonical schema URL (goes in `$schema`) | `https://msrjson.org/schemas/msr-2.1.json` |
+| Schema file to validate against | `schemas/msr-2.1.json` in this repository |
 | Six complete, valid examples | `examples/*.json` in this repository |
 | Human-readable site | <https://msrjson.org> |
 
-If anything below disagrees with `schemas/msr-2.0.json`, the schema wins. Read
+If anything below disagrees with `schemas/msr-2.1.json`, the schema wins. Read
 enum values from the schema itself — never from memory, and never from this
 file.
 
 ## The protocol block is constant
 
-Every MSR JSON 2.0 manifest carries the same `protocol` block. Copy it verbatim;
+Every MSR JSON 2.1 manifest carries the same `protocol` block. Copy it verbatim;
 only `canonical_url` changes, to the manifest's own public URL:
 
 ```json
 "protocol": {
   "name": "MSR JSON",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "Antonio Santos",
   "specification_license": "CC-BY-4.0",
   "reference_implementation_license": "MIT",
@@ -88,7 +88,7 @@ checking. The following have all shipped wrongly before; each one is a bug:
 - **Interfaces** — declare `mcp`, `openapi`, `graphql` or `grpc` only when the
   project really exposes them, with their real URLs.
 - **A copy of the schema inside the project.** Reference the canonical URL;
-  never vendor, embed or hand-edit `msr-2.0.json` into another codebase. A
+  never vendor, embed or hand-edit `msr-2.1.json` into another codebase. A
   second copy maintained by hand once accumulated 81 divergences under the same
   version number.
 
@@ -103,9 +103,15 @@ checking. The following have all shipped wrongly before; each one is a bug:
   (max 256 characters). `tagline` is optional (max 140).
 - `vendor.country_code` is ISO 3166-1 alpha-2 in upper case (`BR`, not `br`).
   It is where the vendor is based, not where the product is offered.
-- Do not add `capabilities.availability` (regions, countries, languages,
-  currencies, data residency) to a 2.0 manifest. It exists only in the
-  unratified 2.1 draft (RFC 0006), and the 2.0 schema rejects it.
+- `capabilities.availability`, `entity.media`, `entity.category`,
+  `distribution` and `capabilities.requirements` exist only in 2.1. A manifest
+  that uses them declares `https://msrjson.org/schemas/msr-2.1.json`; the 2.0
+  schema rejects them.
+- `entity.category` and `entity.subcategories` are slugs from
+  `taxonomy/categories.json`. Pick the one that says what the software is for;
+  `subcategories` never repeats `category`. Omit both rather than guess.
+- In 2.1, every `entity.media` URL and `telemetry.ping_endpoints` entry starts
+  with `https://`.
 - `published_at` / `verified_at` are RFC 3339 date-times with a timezone:
   `2026-09-17T00:00:00Z`.
 - The schema is strict: `additionalProperties: false` at every level. A field
@@ -114,16 +120,16 @@ checking. The following have all shipped wrongly before; each one is a bug:
 ## Validate
 
 Validate against the schema file served at `msrjson.org` (the same bytes as
-`schemas/msr-2.0.json` in this repository). Either tool works:
+`schemas/msr-2.1.json` in this repository). Either tool works:
 
 ```bash
 # Python
 pip install jsonschema
-curl -sSfo /tmp/msr-2.0.json https://msrjson.org/schemas/msr-2.0.json
+curl -sSfo /tmp/msr-2.1.json https://msrjson.org/schemas/msr-2.1.json
 python -c "
 import json, sys
 from jsonschema import Draft202012Validator
-schema = json.load(open('/tmp/msr-2.0.json'))
+schema = json.load(open('/tmp/msr-2.1.json'))
 manifest = json.load(open(sys.argv[1]))
 errors = sorted(Draft202012Validator(schema).iter_errors(manifest), key=lambda e: list(e.path))
 for e in errors: print('/'.join(map(str, e.path)) or '(root)', '->', e.message)
@@ -135,7 +141,7 @@ print('valid: 0 errors')
 ```bash
 # Standalone CLI
 pip install check-jsonschema
-check-jsonschema --schemafile https://msrjson.org/schemas/msr-2.0.json \
+check-jsonschema --schemafile https://msrjson.org/schemas/msr-2.1.json \
   .well-known/msr.json
 ```
 

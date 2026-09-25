@@ -1,4 +1,4 @@
-<!-- version: 1.6.0 | build: 2026-09-17 | update: 2026-09-19 -->
+<!-- version: 1.7.0 | build: 2026-09-17 | update: 2026-09-25 -->
 # MSR JSON — Specification
 
 [![validate](https://github.com/msrjson/specification/actions/workflows/validate.yml/badge.svg)](https://github.com/msrjson/specification/actions/workflows/validate.yml)
@@ -12,11 +12,15 @@ This repository is the **single source of truth**. <https://msrjson.org>
 serves these files and consumes this repository directly; it never keeps its
 own copy. If the two ever disagree, this repository is right.
 
-Canonical schema: **<https://msrjson.org/schemas/msr-2.0.json>**. It is
-the schema's `$id`, what a manifest puts in `$schema`, and the address the file
-is served from. Manifests published before 2026-09-19 name the same schema as
+Current version: **MSR JSON 2.1.0**, canonical schema
+**<https://msrjson.org/schemas/msr-2.1.json>**. It is the schema's `$id`, what a
+new manifest puts in `$schema`, and the address the file is served from.
+
+MSR JSON 2.0 stays valid and served at
+<https://msrjson.org/schemas/msr-2.0.json>; a 2.0 manifest does not need to
+change. Manifests published before 2026-09-19 name 2.0 as
 `https://msr-standard.org/schemas/msr-2.0.json`; that identifier stays valid
-as an alias, and registries resolve it to the URL above.
+as an alias, and registries resolve it to the msrjson.org URL.
 
 ## What MSR JSON is
 
@@ -35,14 +39,16 @@ gatekeeper and no vendor who owns the format.
 
 | Path | What it is |
 | --- | --- |
-| `schemas/msr-2.0.json` | The canonical schema (JSON Schema Draft 2020-12), strict: unknown properties are rejected |
+| `schemas/msr-2.1.json` | The current schema, MSR JSON 2.1.0 (JSON Schema Draft 2020-12), strict: unknown properties are rejected |
+| `schemas/msr-2.0.json` | MSR JSON 2.0.0, still valid |
 | `schemas/msr-1.1.json` | Legacy v1.1, kept for the PAD XML migration bridge |
-| `schemas/msr-2.1-draft.json` | Experimental v2.1 draft — not ratified, do not author against it |
+| `schemas/msr-2.1-draft.json` | Superseded v2.1 draft, identical to `msr-2.1.json` apart from `$id`; kept so draft manifests keep resolving |
 | `examples/*.json` | Six reference manifests, one per entity type, each validating with zero errors |
-| `rfc/rfc-0001..0003.html` | The ratified RFCs |
-| `rfc/rfc-0006.html` | Working draft: geographic and language availability, in the v2.1 draft only |
-| `rfc/rfc-0008.html` | Working draft: media, distribution, execution requirements and Push-Ping |
-| `rfc/rfc-0009.html` | Working draft: `entity.category` and `entity.subcategories` |
+| `rfc/rfc-0001..0003.html` | The ratified RFCs of MSR JSON 2.0 |
+| `rfc/rfc-0006.html` | Ratified in 2.1: geographic and language availability |
+| `rfc/rfc-0007.html` | Working draft: registry conformance and ingestion |
+| `rfc/rfc-0008.html` | Ratified in 2.1: media, distribution, execution requirements and Push-Ping |
+| `rfc/rfc-0009.html` | Ratified in 2.1: `entity.category` and `entity.subcategories` |
 | `taxonomy/categories.json` | The MSR category taxonomy (RFC 0009), versioned independently of the protocol |
 | `tests/` | The conformance suite below |
 
@@ -85,31 +91,28 @@ To validate a manifest of your own:
 ```bash
 pip install check-jsonschema
 check-jsonschema \
-  --schemafile https://msrjson.org/schemas/msr-2.0.json \
+  --schemafile https://msrjson.org/schemas/msr-2.1.json \
   .well-known/msr.json
 ```
 
-## Experimental MSR JSON 2.1 draft
+## What MSR JSON 2.1 adds
 
-[RFC 0008](rfc/rfc-0008.html) proposes optional `entity.media`,
-`distribution.package_managers`, `distribution.app_stores`, and
-`capabilities.requirements` fields. It also describes registry Push-Ping
-processing. The draft schema currently models registry ping URLs as
-`telemetry.ping_endpoints`; it does not define a signed ping payload. These
-fields are experimental and are rejected by the stable 2.0 schema.
+Every field below is optional, and every object stays closed
+(`additionalProperties: false`):
 
-For a local experiment, set the manifest's `$schema` to
-`https://msrjson.org/schemas/msr-2.1-draft.json` and validate with an explicit
-copy of `schemas/msr-2.1-draft.json`:
+- `capabilities.availability` — regions, countries, languages, currencies and
+  data residency ([RFC 0006](rfc/rfc-0006.html)). 2.1 also requires the keys
+  of `entity.descriptions` to be BCP 47 language tags.
+- `entity.media`, `distribution.package_managers`, `distribution.app_stores`,
+  `capabilities.requirements` and `telemetry.ping_endpoints`
+  ([RFC 0008](rfc/rfc-0008.html)). Media and ping URLs must use `https://`.
+- `entity.category` and `entity.subcategories`, slugs of
+  [`taxonomy/categories.json`](taxonomy/categories.json)
+  ([RFC 0009](rfc/rfc-0009.html)).
 
-```bash
-check-jsonschema --schemafile schemas/msr-2.1-draft.json path/to/msr.json
-```
-
-The source versions of `msr-validator` and `msr-cli` also accept an explicit
-local draft schema. They do not bundle the draft by default; the pinned 2.0
-schema remains their default. The draft has not been ratified or released as a
-stable protocol version.
+A manifest that uses none of them validates against both 2.0 and 2.1. The
+source versions of `msr-validator` and `msr-cli` are not released and still
+default to the 2.0 schema; pass `msr-2.1.json` explicitly.
 
 ## Changelog
 

@@ -1,4 +1,4 @@
-<!-- version: 1.0.0 | build: 2026-09-25 | update: 2026-09-25 -->
+<!-- version: 1.1.0 | build: 2026-09-25 | update: 2026-09-25 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,7 +71,7 @@
       <div><strong>RFC:</strong> 0009</div>
       <div><strong>Title:</strong> Entity Category and Category Taxonomy</div>
       <div><strong>Author:</strong> Antonio Santos</div>
-      <div><strong>Status:</strong> Working Draft — in <code>msr-2.1-draft.json</code> only, not ratified</div>
+      <div><strong>Status:</strong> Final Accepted Standard — ratified in MSR JSON 2.1.0, 2026-09-25</div>
       <div><strong>Date:</strong> 2026-09-25</div>
     </div>
 
@@ -173,8 +173,8 @@
     <h2>6. Compatibility</h2>
     <p>
       The change is additive and optional: every valid MSR JSON 2.0 manifest stays valid under 2.1, which makes it a
-      MINOR protocol change. The properties exist only in the experimental <code>schemas/msr-2.1-draft.json</code>;
-      the stable 2.0 schema rejects them under <code>additionalProperties: false</code> until 2.1 is ratified.
+      MINOR protocol change. The properties ship in MSR JSON 2.1 (<code>schemas/msr-2.1.json</code>); the 2.0 schema keeps rejecting them
+      under <code>additionalProperties: false</code>.
     </p>
 
     <h2>7. Security Considerations</h2>
@@ -189,8 +189,7 @@
     <h2>8. Open Questions</h2>
     <ul>
       <li>Some seed categories describe a platform or a format rather than a purpose (<code>mobile-apps</code>,
-        <code>internet-apps</code>, <code>desktop-utilities</code>, <code>ai-apps</code>). Before ratification, the
-        Working Group decides whether to deprecate them in favour of purpose categories.</li>
+        <code>internet-apps</code>, <code>desktop-utilities</code>, <code>ai-apps</code>). The Working Group decides whether to deprecate them in favour of purpose categories.</li>
       <li>Whether taxonomy names are localized in the taxonomy file or left to registries.</li>
     </ul>
   </div>

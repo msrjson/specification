@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://msrjson.org/schemas/msr-2.1-draft.json",
-  "title": "MSR JSON Protocol Schema (v2.1 Draft, superseded)",
-  "description": "Superseded by https://msrjson.org/schemas/msr-2.1.json, ratified on 2026-09-25. Identical to it apart from $id, title and description; kept so manifests that reference the draft keep resolving.",
+  "$id": "https://msrjson.org/schemas/msr-2.1.json",
+  "title": "MSR JSON Protocol Schema",
+  "description": "MSR JSON 2.1: the 2.0 schema plus geographic and language availability (RFC 0006), media assets, package managers, execution requirements and push-ping endpoints (RFC 0008), and entity category (RFC 0009). A 2.0 manifest is valid against 2.1 when its entity.descriptions keys are BCP 47 language tags (RFC 0006).",
   "type": "object",
   "required": [
     "$schema",

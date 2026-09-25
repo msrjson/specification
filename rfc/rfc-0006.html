@@ -1,4 +1,4 @@
-<!-- version: 1.0.2 | build: 2026-09-18 | update: 2026-09-19 -->
+<!-- version: 1.1.0 | build: 2026-09-18 | update: 2026-09-25 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,7 +64,7 @@
       <div><strong>RFC:</strong> 0006</div>
       <div><strong>Title:</strong> Geographic and Language Availability</div>
       <div><strong>Author:</strong> Protocol Stewards</div>
-      <div><strong>Status:</strong> Working Draft — in <code>msr-2.1-draft.json</code> only, not ratified</div>
+      <div><strong>Status:</strong> Final Accepted Standard — ratified in MSR JSON 2.1.0, 2026-09-25</div>
       <div><strong>Date:</strong> 2026-09-18</div>
     </div>
 
@@ -128,7 +128,7 @@
       customer can be billed in; <code>pricing.currency</code> stays the currency of the advertised price.
     </p>
     <p>
-      The same draft also constrains the keys of <code>entity.descriptions</code> to BCP 47 language tags.
+      MSR JSON 2.1 also constrains the keys of <code>entity.descriptions</code> to BCP 47 language tags.
     </p>
 
     <h2>3. Semantics</h2>
@@ -151,8 +151,10 @@
     <h2>4. Compatibility</h2>
     <p>
       MSR JSON 2.0 closes <code>capabilities</code> with <code>additionalProperties: false</code>. Adding the
-      object to 2.0 would make a 2.0 validator reject manifests that use it. The change therefore lives in the
-      v2.1 draft schema only. No 2.0 manifest changes meaning, and no 2.0 validator changes behavior.
+      object to 2.0 would make a 2.0 validator reject manifests that use it. The change therefore ships in MSR JSON 2.1
+      (<code>schemas/msr-2.1.json</code>). No 2.0 manifest changes meaning, and no 2.0 validator changes behavior.
+      A 2.0 manifest whose <code>entity.descriptions</code> keys are not BCP 47 tags must rename them to validate
+      against 2.1.
     </p>
 
     <h2>5. Security and Privacy Considerations</h2>

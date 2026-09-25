@@ -1,4 +1,4 @@
-<!-- version: 1.0.0 | build: 2026-09-21 | update: 2026-09-21 -->
+<!-- version: 1.1.0 | build: 2026-09-21 | update: 2026-09-25 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +72,7 @@
       <div><strong>Title:</strong> Media Assets, Package Manager Distribution, Execution Requirements &amp; Push-Ping
         Ingestion Protocol</div>
       <div><strong>Author:</strong> Protocol Stewards &amp; Registry Interoperability WG</div>
-      <div><strong>Status:</strong> Working Draft — in <code>msr-2.1-draft.json</code> only, not ratified</div>
+      <div><strong>Status:</strong> Final Accepted Standard — ratified in MSR JSON 2.1.0, 2026-09-25</div>
       <div><strong>Date:</strong> 2026-09-21</div>
     </div>
 
@@ -99,7 +99,7 @@
 
     <h2>2. Standardized Media Block (<code>entity.media</code>)</h2>
     <p>
-      Catalogs, software directories (such as MySoftRank), and discovery agents require verified visual assets to
+      Catalogs, software directories, and discovery agents require verified visual assets to
       present software without relying on brittle HTML screen scraping. RFC 0008 adds an optional
       <code>entity.media</code> object:
     </p>
@@ -122,7 +122,7 @@
       "lang":   "en"
     }
   ],
-  "video_demo_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  "video_demo_url": "https://example.com/assets/demo.mp4"
 }</code></pre>
     </div>
     <table class="tech-table">
@@ -212,11 +212,12 @@
 
     <h2>5. Push-Ping Ingestion Protocol</h2>
     <p>
-      Rather than forcing registry crawlers to hammer hundreds of thousands of publisher domains daily, publishers can
-      dispatch an authenticated Push-Ping webhook when publishing a release:
+      Rather than waiting for registry crawlers to poll their domain, publishers can notify the registries listed in
+      <code>telemetry.ping_endpoints</code> when they publish a release. The ping is an unauthenticated hint that
+      carries only the domain; it is never a source of data:
     </p>
     <div class="code-container">
-      <pre class="code-block"><code>POST https://mysoftrank.com/api/v1/ping
+      <pre class="code-block"><code>POST https://registry.example.org/api/v1/ping
 Content-Type: application/json
 
 {
@@ -232,15 +233,18 @@ Content-Type: application/json
         3) MUST be enforced prior to dispatching outbound HTTP requests.</li>
       <li><strong>Cryptographic Verification:</strong> If the fetched manifest contains a <code>trust.signatures</code>
         block, the signature MUST be verified before promoting the new release into canonical public indexing.</li>
-      <li><strong>Bandwidth Reduction:</strong> Adopting Push-Ping eliminates continuous polling loops, decreasing
-        registry outbound bandwidth and publisher server load by more than 90%.</li>
+      <li><strong>Polling:</strong> A registry that honors pings MAY poll less often, but MUST keep polling with the
+        cache validators of RFC 0007, because a ping can be lost and is never required.</li>
+      <li><strong>HTTPS only:</strong> Every URL declared under <code>entity.media</code> and every
+        <code>telemetry.ping_endpoints</code> entry MUST use <code>https://</code>; the schema rejects other
+        schemes.</li>
     </ol>
 
     <h2>6. Compatibility</h2>
     <p>
-      The properties defined in this RFC reside exclusively in the experimental <code>schemas/msr-2.1-draft.json</code>
-      schema. Existing MSR JSON 2.0 manifests and production 2.0 validators are unaffected and will reject these
-      properties under <code>additionalProperties: false</code> until the 2.1 protocol is formally ratified.
+      The properties defined in this RFC ship in MSR JSON 2.1 (<code>schemas/msr-2.1.json</code>). Existing MSR JSON
+      2.0 manifests stay valid, and 2.0 validators keep rejecting these properties under
+      <code>additionalProperties: false</code>: a manifest that uses them declares the 2.1 schema.
     </p>
 
     <h2>7. Security &amp; Safety Considerations</h2>
