@@ -34,8 +34,9 @@ is valid against 2.1 when its `entity.descriptions` keys are BCP 47 tags
   2.0, every declared object is closed, the six reference manifests validate
   against both versions, and the superseded draft equals 2.1 apart from
   metadata.
-- `@msrjson/schema` 2.1.0 exports `msr-2.1.json` and
-  `taxonomy/categories.json`.
+- `package.json` is 2.1.0 and exports `msr-2.1.json` and
+  `taxonomy/categories.json`. npm still serves `@msrjson/schema` 2.0.0 until
+  the 2.1.0 package is published.
 
 ### Fixed
 
@@ -62,6 +63,7 @@ is valid against 2.1 when its `entity.descriptions` keys are BCP 47 tags
   apart from `$id`, title and description, kept so manifests that name the
   draft keep resolving.
 - `README.md` and `AGENTS.md` point to 2.1 as the current schema.
+- The RFC pages carry the "Protocol v2.1.0" badge.
 
 ### Earlier unreleased changes, shipped in 2.1.0
 
